@@ -1,17 +1,48 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgOptimizedImage } from '@angular/common';
 
-import { routes } from './app.routes';
+/* =========================
+   Router
+   ========================= */
+import { RouterModule } from '@angular/router';
 
-import { provideNgxMask } from 'ngx-mask';
+/*Elementos de angular material*/
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatSelectModule} from '@angular/material/select';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
-export const appConfig: ApplicationConfig = {
-  providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideHttpClient(),
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
-    provideNgxMask()
-  ]
-};
+/**
+ * SHARED_IMPORTS
+ * ---------------------------------------------------------
+ * Colección de módulos/directivas reutilizables en
+ * componentes standalone.
+ *
+ * Se importa así:
+ * imports: [...SHARED_IMPORTS, HeaderApp, FooterApp]
+ */
+
+export const SHARED_IMPORTS = [
+  CommonModule,
+  FormsModule,
+  ReactiveFormsModule,
+  NgOptimizedImage,
+  RouterModule,
+  MatButtonModule,
+  MatCardModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatIconModule,
+  MatRadioModule,
+  MatDatepickerModule,
+  MatSelectModule,
+  MatNativeDateModule,
+  MatCheckboxModule
+];
