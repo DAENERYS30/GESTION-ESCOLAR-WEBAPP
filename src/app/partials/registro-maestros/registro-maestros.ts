@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { SHARED_IMPORTS } from '../../shared/shared.imports';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { MaestrosService } from '../../services/maestros-service';
+import { NotificationService } from '../../services/tools/notification-service';
 
 @Component({
   selector: 'app-registro-maestros',
@@ -51,7 +53,9 @@ export class RegistroMaestros implements OnInit {
 
   constructor(
     private location: Location,
-    private router: Router
+    private router: Router,
+    private maestrosService: MaestrosService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit() {
@@ -87,6 +91,26 @@ export class RegistroMaestros implements OnInit {
   }
 
   public registrar(){
+
+    // Inicializo el objeto de errores para evitar que se muestren errores anteriores o datos anteriores al momento de registrar un nuevo admin
+    this.errors = {};
+    console.log("Datos del maestro: ", this.maestro);
+
+    // Validar datos y mostrar errores
+    this.errors = this.maestrosService.validarMaestro(this.maestro, this.editar);
+    //Verificamos si el objeto de errores está vacío, lo que indica que no hay errores de validación
+    if(Object.keys(this.errors).length > 0){
+      return;
+    }
+
+    // Validar si las contraseñas coinciden solo si no se está editando, ya que en la edición no es obligatorio cambiar la contraseña
+    if(this.maestro.password === this.maestro.confirmar_password){
+      // TODO: Aquí iría la lógica para registrar al maestro, como llamar a un servicio que se encargue de hacer la petición al backend
+    }else{
+      this.notificationService.error("Las contraseñas no coinciden");
+      this.maestro.password="";
+      this.maestro.confirmar_password="";
+    }
 
   }
 

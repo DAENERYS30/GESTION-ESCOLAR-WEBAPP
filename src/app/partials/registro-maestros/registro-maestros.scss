@@ -175,6 +175,10 @@ mat-form-field {
   transition: color 0.3s ease; /* Suaviza el cambio de color */
 }
 
+.invalid-feedback, .feedback-error {
+  margin-left: 2.5rem;
+}
+
 /* =========================
    Ajustes para el formulario en dispositivos móviles
    ========================= */
