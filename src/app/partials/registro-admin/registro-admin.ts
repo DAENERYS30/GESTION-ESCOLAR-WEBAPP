@@ -88,7 +88,19 @@ export class RegistroAdmin implements OnInit {
 
     // Validar si las contraseñas coinciden solo si no se está editando, ya que en la edición no es obligatorio cambiar la contraseña
     if(this.admin.password === this.admin.confirmar_password){
-      // TODO: Aquí iría la lógica para registrar al administrador, como llamar a un servicio que se encargue de hacer la petición al backend
+      // Si no hay errores de validación, procedemos a registrar al admin
+      this.administradoresService.registrarAdmin(this.admin).subscribe({
+        next: (response) => {
+          this.notificationService.success("Administrador registrado exitosamente");
+          console.log(response);
+          //Si se registra correctamente, redirigimos al login
+          this.router.navigate(['']);
+        },
+        error: (error) => {
+          console.error("Error al registrar administrador: ", error);
+          this.notificationService.error("Error al registrar administrador");
+        }
+      });
     }else{
       this.notificationService.error("Las contraseñas no coinciden");
       this.admin.password="";
