@@ -19,7 +19,7 @@
       <!-- Nombre del alumno -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Nombre</mat-label>
-        <input matInput [(ngModel)]="alumno.first_name" name="first_name" placeholder="Nombre">
+        <input matInput [(ngModel)]="alumno.first_name" name="first_name" placeholder="Escribe el nombre del alumno">
       </mat-form-field>
       @if (errors.first_name) {
         <div class="invalid-feedback">{{ errors.first_name }}</div>
@@ -27,7 +27,7 @@
         <!-- Apellidos del alumno -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Apellidos</mat-label>
-        <input matInput [(ngModel)]="alumno.last_name" name="last_name" placeholder="Apellidos">
+        <input matInput [(ngModel)]="alumno.last_name" name="last_name" placeholder="Escribe los apellidos">
       </mat-form-field>
       @if (errors.last_name) {
         <div class="invalid-feedback">{{ errors.last_name }}</div>
@@ -35,7 +35,7 @@
         <!-- Correo electrónico del alumno -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Correo electrónico</mat-label>
-        <input matInput [(ngModel)]="alumno.email" name="email" placeholder="Correo electrónico">
+        <input matInput [(ngModel)]="alumno.email" name="email" placeholder="Escribe el correo electrónico">
       </mat-form-field>
       @if (errors.email) {
         <div class="invalid-feedback">{{ errors.email }}</div>
@@ -44,7 +44,7 @@
         <!-- Contraseña del alumno -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Contraseña</mat-label>
-        <input matInput [(ngModel)]="alumno.password" name="password" [type]="inputType_1" placeholder="Contraseña">
+        <input matInput [(ngModel)]="alumno.password" name="password" [type]="inputType_1" placeholder="Escribe la contraseña">
         <mat-icon matSuffix class="eye-icon" (click)="showPassword()">{{hide_1 ? 'visibility_off' : 'visibility'}}</mat-icon>
       </mat-form-field>
       @if (errors.password) {
@@ -54,7 +54,7 @@
         <!-- Confirmar contraseña del alumno -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Confirmar contraseña</mat-label>
-        <input matInput [(ngModel)]="alumno.confirmar_password" name="confirmar_password" [type]="inputType_2" placeholder="Confirma la contraseña">
+        <input matInput [(ngModel)]="alumno.confirmar_password" name="confirmar_password" [type]="inputType_2" placeholder="Escribe la contraseña nuevamente">
         <mat-icon matSuffix class="eye-icon" (click)="showPwdConfirmar()">{{hide_2 ? 'visibility_off' : 'visibility'}}</mat-icon>
       </mat-form-field>
       @if (errors.confirmar_password) {
@@ -64,7 +64,7 @@
       <!-- Campo para la fecha de nacimiento del alumno -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Fecha de nacimiento</mat-label>
-        <input matInput [matDatepicker]="picker" [(ngModel)]="alumno.fecha_nacimiento" (focus)="picker.open()" placeholder="Fecha de nacimiento" (dateChange)="changeFecha($event)" type="text">
+        <input matInput [matDatepicker]="picker" [(ngModel)]="alumno.fecha_nacimiento" (focus)="picker.open()" placeholder="Escribe la fecha de nacimiento" (dateChange)="changeFecha($event)" type="text">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
@@ -73,7 +73,7 @@
       <!-- curp del alumno -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>CURP</mat-label>
-        <input matInput minlength="18" maxlength="18" [(ngModel)]="alumno.curp" name="curp" placeholder="CURP">
+        <input matInput minlength="18" maxlength="18" [(ngModel)]="alumno.curp" name="curp" placeholder="Escribe el CURP">
         <mat-hint align="end">{{alumno.curp?.length || 0}}/18</mat-hint> <!-- Para mostrar el número de caracteres -->
       </mat-form-field>
       @if (errors.curp) {
@@ -83,7 +83,7 @@
           <!-- RFC del alumno -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>RFC</mat-label>
-        <input matInput minlength="12" maxlength="13" [(ngModel)]="alumno.rfc" name="rfc" placeholder="RFC">
+        <input matInput minlength="12" maxlength="13" [(ngModel)]="alumno.rfc" name="rfc" placeholder="Escribe el RFC">
         <mat-hint align="end">{{alumno.rfc?.length || 0}}/13</mat-hint> <!-- Para mostrar el número de caracteres -->
       </mat-form-field>
       @if (errors.rfc) {
@@ -93,7 +93,7 @@
       <!-- Edad del alumno -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Edad</mat-label>
-        <input matInput [(ngModel)]="alumno.edad" mask="00" name="edad" placeholder="Edad">
+        <input matInput [(ngModel)]="alumno.edad" mask="00" name="edad" placeholder="Escribe la edad">
       </mat-form-field>
       @if (errors.edad) {
         <div class="invalid-feedback">{{ errors.edad }}</div>
@@ -102,7 +102,7 @@
       <!-- Teléfono del alumno -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Teléfono</mat-label>
-        <input matInput [(ngModel)]="alumno.telefono" mask="000-000-0000" name="telefono" placeholder="Teléfono">
+        <input matInput [(ngModel)]="alumno.telefono" mask="000-000-0000" name="telefono" placeholder="Escribe el telsséfono">
       </mat-form-field>
       @if (errors.telefono) {
         <div class="invalid-feedback">{{ errors.telefono }}</div>

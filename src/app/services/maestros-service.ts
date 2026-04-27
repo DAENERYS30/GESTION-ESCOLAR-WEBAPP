@@ -1,15 +1,29 @@
 import { Injectable } from '@angular/core';
 import { ErrorsService } from './tools/errors-service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ValidatorService } from './tools/validator-service';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
+import { AuthServices } from './auth-services';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MaestrosService {
 
+   /** Genera los HttpHeaders con el token de sesión si existe */
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.authServices.getSessionToken();
+    return token
+      ? new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` })
+      : new HttpHeaders({ 'Content-Type': 'application/json' });
+  }
+
   constructor(
     private validatorService: ValidatorService,
     private errorService: ErrorsService,
+    private http: HttpClient,
+    private authServices: AuthServices
   ) {}
 
   public esquemaMaestro(){
@@ -95,4 +109,11 @@ export class MaestrosService {
 
     return error;
   }
+  /* creanos la peticion post para maestro */
+  // 3. PETICIÓN HTTP: Enviar a Django el registro del Maestro
+  public registrarMaestro(data: any): Observable<any> {
+    // Importante: La ruta debe ser '/maestros/' para que coincida con tu urls.py
+    return this.http.post<any>(`${environment.url_api}/maestros/`, data, { headers: this.getAuthHeaders() });
+  }
+
 }

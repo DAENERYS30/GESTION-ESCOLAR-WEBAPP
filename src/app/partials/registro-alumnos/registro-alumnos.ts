@@ -1,32 +1,31 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SHARED_IMPORTS } from '../../shared/shared.imports';
-import { NgxMaskDirective } from "ngx-mask"; // Importante para las máscaras de edad y teléfono
+import { NgxMaskDirective } from "ngx-mask";
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-// Asumo que tienes un servicio para alumnos. Ajusta la ruta según tu proyecto:
 import { AlumnosService } from '../../services/alumnos-service';
 import { NotificationService } from '../../services/tools/notification-service';
 
 @Component({
   selector: 'app-registro-alumnos',
+  standalone: true,
   imports: [
     ...SHARED_IMPORTS,
-    NgxMaskDirective // Agregado aquí
+    NgxMaskDirective
   ],
   templateUrl: './registro-alumnos.html',
   styleUrl: './registro-alumnos.scss',
 })
 export class RegistroAlumnos implements OnInit {
 
-  @Input() rol:string = "";
-  @Input() datos_user:any = {};
+  @Input() rol: string = "";
+  @Input() datos_user: any = {};
 
   public alumno: any = {};
   public errors: any = {};
-  public editar:boolean = false;
-  public idUser: number = 0;
+  public editar: boolean = false;
 
-  //Para contraseñas
+  // Variables para ocultar/mostrar contraseñas
   public hide_1: boolean = false;
   public hide_2: boolean = false;
   public inputType_1: string = 'password';
@@ -35,103 +34,78 @@ export class RegistroAlumnos implements OnInit {
   constructor(
     private location: Location,
     private router: Router,
-    private alumnosService: AlumnosService, // Inyectamos el servicio de alumnos
-    private notificationService: NotificationService // Inyectamos notificaciones
+    private alumnosService: AlumnosService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit() {
-    // Inicializar el objeto alumno con el esquema definido en tu servicio
+    // 1. Inicializamos el objeto con los campos vacíos del servicio
     this.alumno = this.alumnosService.esquemaAlumno();
-    // Asignar el rol al alumno
-    this.alumno.rol = this.rol;
+    // 2. Forzamos el rol a 'alumno'
+    this.alumno.rol = 'alumno';
   }
 
-  //Funciones para password
-  public showPassword() {
-    if(this.inputType_1 === 'password'){
-      this.inputType_1 = 'text';
-      this.hide_1 = true;
-    } else {
-      this.inputType_1 = 'password';
-      this.hide_1 = false;
-    }
-  }
-
-  public showPwdConfirmar() {
-    if(this.inputType_2 === 'password'){
-      this.inputType_2 = 'text';
-      this.hide_2 = true;
-    } else {
-      this.inputType_2 = 'password';
-      this.hide_2 = false;
-    }
-  }
-
-  public regresar(){
-    this.location.back();
-  }
-
+  /**
+   * Lógica para el botón Registrar
+   */
   public registrar() {
-    // Limpiamos errores previos
     this.errors = {};
-    console.log("Datos del alumno: ", this.alumno);
+    console.log("Enviando datos del alumno: ", this.alumno);
 
-    // Validar datos y mostrar errores (asegúrate de tener esta función en tu AlumnosService)
+    // Validamos los campos (Asegúrate que validarAlumno existe en tu servicio)
     this.errors = this.alumnosService.validarAlumno(this.alumno, this.editar);
 
-    // Verificamos si hay errores de validación
-    if(Object.keys(this.errors).length > 0){
+    if (Object.keys(this.errors).length > 0) {
+      this.notificationService.error("Por favor, revisa los campos marcados.");
       return;
     }
 
-    // Validar coincidencia de contraseñas
-    if(this.alumno.password === this.alumno.confirmar_password) {
-      // Registrar al alumno
-      this.alumnosService.registrarAlumno(this.alumno).subscribe({
-        next: (response) => {
-          this.notificationService.success("Alumno registrado exitosamente");
-          console.log(response);
-          this.router.navigate(['']);
-        },
-        error: (error) => {
-          console.error("Error al registrar alumno: ", error);
-          this.notificationService.error("Error al registrar alumno");
-        }
-      });
-    } else {
+    // Validación de contraseñas coincidentes
+    if (this.alumno.password !== this.alumno.confirmar_password) {
       this.notificationService.error("Las contraseñas no coinciden");
-      this.alumno.password = "";
-      this.alumno.confirmar_password = "";
+      return;
     }
+
+    // Petición HTTP a Django
+    this.alumnosService.registrarAlumno(this.alumno).subscribe({
+      next: (response) => {
+        this.notificationService.success("¡Alumno guardado correctamente!");
+        this.router.navigate(['']); // Redirige al login o inicio
+      },
+      error: (err) => {
+        console.error("Error en el servidor:", err);
+        this.notificationService.error("No se pudo registrar al alumno.");
+      }
+    });
+  }
+
+  /**
+   * Formatea la fecha de Angular Material a YYYY-MM-DD para Django
+   */
+  public changeFecha(event: any) {
+    if (event.value) {
+      const fecha = new Date(event.value);
+      this.alumno.fecha_nacimiento = fecha.toISOString().split("T")[0];
+    }
+  }
+
+  // --- Funciones de Utilidad ---
+
+  public showPassword() {
+    this.hide_1 = !this.hide_1;
+    this.inputType_1 = this.hide_1 ? 'text' : 'password';
+  }
+
+  public showPwdConfirmar() {
+    this.hide_2 = !this.hide_2;
+    this.inputType_2 = this.hide_2 ? 'text' : 'password';
+  }
+
+  public regresar() {
+    this.location.back();
   }
 
   public actualizar() {
-    // Lógica pendiente para actualizar
-  }
-
-  // Función para detectar el cambio de fecha
-  public changeFecha(event :any){
-    this.alumno.fecha_nacimiento = event.value.toISOString().split("T")[0];
-  }
-
-  // Funciones para los checkbox (materias)
-  public checkboxChange(event:any){
-    if(event.checked){
-      this.alumno.materias_json.push(event.source.value);
-    } else {
-      this.alumno.materias_json.forEach((materia: any, i: any) => {
-        if(materia === event.source.value){
-          this.alumno.materias_json.splice(i,1);
-        }
-      });
-    }
-  }
-
-  public revisarSeleccion(nombre: string){
-    if(this.alumno.materias_json){
-      const busqueda = this.alumno.materias_json.find((element: string)=>element===nombre);
-      return busqueda !== undefined;
-    }
-    return false;
+    // Lógica para el método PUT (edición)
   }
 }
