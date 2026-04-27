@@ -40,7 +40,7 @@ export class MaestrosService {
       'rfc': '',
       'cubiculo': '',
       'area_investigacion': '',
-      'materias_array': []
+      'materias_json': []
     }
 
   }
@@ -103,9 +103,9 @@ export class MaestrosService {
       error["area_investigacion"] = this.errorService.required;
     }
 
-    if(!this.validatorService.required(data["materias_array"])){
-      error["materias_array"] = "Debes seleccionar materias para poder registrarte";
-    }
+   if(!data["materias_json"] || data["materias_json"].length === 0){
+  error["materias_json"] = "Debes seleccionar al menos una materia";
+}
 
     return error;
   }

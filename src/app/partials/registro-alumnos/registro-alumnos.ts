@@ -66,6 +66,9 @@ export class RegistroAlumnos implements OnInit {
       return;
     }
 
+    // Igualamos el username al email para que Django no se queje
+    this.alumno.username = this.alumno.email;
+
     // Petición HTTP a Django
     this.alumnosService.registrarAlumno(this.alumno).subscribe({
       next: (response) => {
@@ -79,15 +82,20 @@ export class RegistroAlumnos implements OnInit {
     });
   }
 
-  /**
-   * Formatea la fecha de Angular Material a YYYY-MM-DD para Django
-   */
   public changeFecha(event: any) {
-    if (event.value) {
-      const fecha = new Date(event.value);
+  // Verificamos que el evento y el valor existan para no tronar el sistema
+  if (event && event.value) {
+    const fecha = new Date(event.value);
+
+    // Si la fecha es válida, la formateamos para Django (YYYY-MM-DD)
+    if (!isNaN(fecha.getTime())) {
       this.alumno.fecha_nacimiento = fecha.toISOString().split("T")[0];
     }
+  } else {
+    // Si el usuario borra la fecha del calendario, la dejamos vacía
+    this.alumno.fecha_nacimiento = "";
   }
+}
 
   // --- Funciones de Utilidad ---
 

@@ -58,8 +58,12 @@ export class RegistroMaestros implements OnInit {
     private notificationService: NotificationService
   ) { }
 
-  ngOnInit() {
-  }
+ ngOnInit() {
+  // Inicializamos el objeto con el esquema del servicio
+  this.maestro = this.maestrosService.esquemaMaestro();
+  // Asignamos el rol
+  this.maestro.rol = this.rol;
+}
 
   //Funciones para password
   public showPassword()
@@ -90,51 +94,78 @@ export class RegistroMaestros implements OnInit {
     this.location.back();
   }
 
-  public registrar(){
+ public registrar() {
+  this.errors = {};
 
-    // Inicializo el objeto de errores para evitar que se muestren errores anteriores o datos anteriores al momento de registrar un nuevo admin
-    this.errors = {};
-    console.log("Datos del maestro: ", this.maestro);
+  // Validar datos
+  this.errors = this.maestrosService.validarMaestro(this.maestro, this.editar);
 
-    // Validar datos y mostrar errores
-    this.errors = this.maestrosService.validarMaestro(this.maestro, this.editar);
-    //Verificamos si el objeto de errores está vacío, lo que indica que no hay errores de validación
-    if(Object.keys(this.errors).length > 0){
-      return;
-    }
-
-    // Validar si las contraseñas coinciden solo si no se está editando, ya que en la edición no es obligatorio cambiar la contraseña
-    if(this.maestro.password === this.maestro.confirmar_password){
-      // TODO: Aquí iría la lógica para registrar al maestro, como llamar a un servicio que se encargue de hacer la petición al backend
-    }else{
-      this.notificationService.error("Las contraseñas no coinciden");
-      this.maestro.password="";
-      this.maestro.confirmar_password="";
-    }
-
+  if(Object.keys(this.errors).length > 0){
+    console.log("Errores de validación:", this.errors);
+    this.notificationService.error("Revisa los campos obligatorios");
+    return;
   }
+
+  // Validar contraseñas
+  if(this.maestro.password === this.maestro.confirmar_password){
+
+    // AQUÍ ES DONDE HACEMOS LA CONEXIÓN REAL:
+    this.maestrosService.registrarMaestro(this.maestro).subscribe({
+      next: (response) => {
+        this.notificationService.success("Maestro registrado exitosamente");
+        this.router.navigate(['']);
+      },
+      error: (err) => {
+        console.error("Error en el servidor:", err);
+        // Si Django manda el mensaje de 'Email ya existe', lo mostramos
+        const msg = err.error?.message || "No se pudo registrar al maestro";
+        this.notificationService.error(msg);
+      }
+    });
+
+  } else {
+    this.notificationService.error("Las contraseñas no coinciden");
+    this.maestro.password = "";
+    this.maestro.confirmar_password = "";
+  }
+}
 
   public actualizar(){
 
   }
 
-  //Función para detectar el cambio de fecha
-  public changeFecha(event :any){
-    this.maestro.fecha_nacimiento = event.value.toISOString().split("T")[0];
-  }
 
-  // Funciones para los checkbox
-  public checkboxChange(event:any){
-    if(event.checked){
-      this.maestro.materias_json.push(event.source.value)
-    }else{
-      this.maestro.materias_json.forEach((materia: any, i: any) => {
-        if(materia === event.source.value){
-          this.maestro.materias_json.splice(i,1)
-        }
-      });
+
+  //Función para detectar el cambio de fecha
+ public changeFecha(event: any) {
+  if (event && event.value) {
+    const fecha = new Date(event.value);
+    if (!isNaN(fecha.getTime())) {
+      // Esto asegura que Django reciba YYYY-MM-DD
+      this.maestro.fecha_nacimiento = fecha.toISOString().split("T")[0];
     }
   }
+}
+
+  // Funciones para los checkbox
+  public checkboxChange(event: any) {
+  // Si por algo materias_json es undefined, lo inicializamos como arreglo
+  if (!this.maestro.materias_json) {
+    this.maestro.materias_json = [];
+  }
+
+  if (event.checked) {
+    // Agregamos la materia
+    this.maestro.materias_json.push(event.source.value);
+  } else {
+    // La quitamos si desmarcan el checkbox
+    const index = this.maestro.materias_json.indexOf(event.source.value);
+    if (index !== -1) {
+      this.maestro.materias_json.splice(index, 1);
+    }
+  }
+  console.log("Materias seleccionadas:", this.maestro.materias_json);
+}
 
   public revisarSeleccion(nombre: string){
     if(this.maestro.materias_json){
@@ -148,5 +179,6 @@ export class RegistroMaestros implements OnInit {
       return false;
     }
   }
+
 
 }
