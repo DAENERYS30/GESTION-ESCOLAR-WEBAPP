@@ -220,3 +220,20 @@ p, span, label, input, button {
     background: color.adjust($color-primary, $lightness: -10%);
   }
 }
+/* correcion de background traslucido */
+/* Plan B: Atacar las variables de superficie de Material MDC */
+.cdk-overlay-pane {
+  --mdc-filled-set-container-color: #ffffff !important;
+  --mdc-select-panel-background-color: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+.mat-mdc-select-panel {
+  background-color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Esto asegura que las opciones individuales no sean transparentes */
+.mat-mdc-option {
+  background-color: #ffffff !important;
+}
