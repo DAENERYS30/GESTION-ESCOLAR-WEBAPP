@@ -18,7 +18,7 @@ export class AlumnosService {
     private authServices: AuthServices
   ) {}
 
-  private getAuthHeaders(): HttpHeaders {
+  private getAuthHeaders(): HttpHeaders { // Método para generar los HttpHeaders con el token de sesión si existe
     const token = this.authServices.getSessionToken();
     return token
       ? new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` })

@@ -110,4 +110,10 @@ export class AdministradoresService {
     return this.http.post<any>(`${environment.url_api}/admin/`, data, { headers: this.getAuthHeaders() });
   }
 
+  //Creamos la petición GET para obtener la lista de administradores, esta función se llamará en el método ngOnInit() del componente admin-screen.ts
+  public obtenerAdmins(): Observable<any> {
+    return this.http.get<any>(`${environment.url_api}/lista-admins/`, { headers: this.getAuthHeaders() });
+  }
+
+
 }
