@@ -6,6 +6,8 @@ import { NgOptimizedImage } from '@angular/common';
    Router
    ========================= */
 import { RouterModule } from '@angular/router';
+//Agregar ngClass para el navbar
+import { NgClass } from '@angular/common';
 
 /*Elementos de angular material*/
 import { MatButtonModule } from '@angular/material/button';
@@ -58,4 +60,5 @@ export const SHARED_IMPORTS = [
   MatPaginatorModule,
   NgxMaskDirective,
   NgxMaskPipe,
+  NgClass
 ];

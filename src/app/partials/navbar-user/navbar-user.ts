@@ -1,12 +1,15 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { NgClass } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { AuthServices } from '../../services/auth-services';
 import { Router } from '@angular/router';
+import { SHARED_IMPORTS } from '../../shared/shared.imports';
 
 @Component({
   selector: 'app-navbar-user',
-  standalone: true,
-  imports: [NgClass],
+  imports: [
+    ...SHARED_IMPORTS
+  ],
   templateUrl: './navbar-user.html',
   styleUrl: './navbar-user.scss',
 })
