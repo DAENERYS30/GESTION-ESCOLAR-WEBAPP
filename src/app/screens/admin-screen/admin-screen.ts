@@ -41,15 +41,15 @@ export class AdminScreen implements OnInit{
       }
     });
   }
-   // Método para la acción del botón de editar
+
+  //Metodo para editar un administrador, se redirige a la pantalla de edición con el id del administrador seleccionado
   public goEditar(id: number): void {
-    console.log('Se hizo clic en editar el ID:', id);
-    // this.router.navigate(['/registro-admin', id]);
+    this.router.navigate(['/registro-usuarios', 'administrador', id]);
   }
 
-  // Método para la acción del botón de eliminar
+  //Metodo para eliminar un administrador, se muestra una confirmación antes de eliminar
   public delete(id: number): void {
-    console.log('Se hizo clic en eliminar el ID:', id);
+
   }
 
 }

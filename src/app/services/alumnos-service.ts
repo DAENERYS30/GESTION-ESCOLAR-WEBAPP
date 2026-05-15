@@ -108,4 +108,8 @@ export class AlumnosService {
   public registrarAlumno(data: any): Observable<any> {
     return this.http.post<any>(`${environment.url_api}/alumnos/`, data, { headers: this.getAuthHeaders() });
   }
+   // Función para obtener la lista de alumnos registrados
+  public obtenerListaAlumnos(): Observable<any> {
+    return this.http.get<any>(`${environment.url_api}/lista-alumnos/`, { headers: this.getAuthHeaders() });
+  }
 }

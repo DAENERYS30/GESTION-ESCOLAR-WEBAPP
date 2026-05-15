@@ -345,3 +345,15 @@ table {
     vertical-align: bottom;
   }
 }
+// Cambia el color de la flechita cuando está activa
+::ng-deep .mat-sort-header-arrow {
+  color: #3f51b5 !important; // Usa el color de tu tema
+}
+
+// Estilo para que el encabezado se vea mejor al pasar el mouse
+.mat-header-cell {
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+    cursor: pointer;
+  }
+}

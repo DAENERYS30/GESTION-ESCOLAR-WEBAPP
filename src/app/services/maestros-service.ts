@@ -120,5 +120,10 @@ export class MaestrosService {
   public obtenerListaMaestros(): Observable<any> {
     return this.http.get<any>(`${environment.url_api}/lista-maestros/`, { headers: this.getAuthHeaders() });
   }
+
+  // Función para obtener la lista de alumnos registrados
+  public obtenerListaAlumnos(): Observable<any> {
+    return this.http.get<any>(`${environment.url_api}/lista-alumnos/`, { headers: this.getAuthHeaders() });
+  }
 }
 
