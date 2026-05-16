@@ -65,11 +65,11 @@ export class MaestrosScreen implements OnInit {
 
   //Función para obtener la lista de maestros registrados
   public obtenerMaestros(): void {
+    /* llamamos al servidor  */
     this.maestrosService.obtenerListaMaestros().subscribe({
       next: (response) => {
-        // 1. Procesar/Aplanar los datos (el forEach que vimos arriba)
+
         this.lista_maestros = response;
-        // ... aquí va tu forEach ...
         if (response.length > 0) {
           response.forEach((usuario: any) => {
             // "Aplanamos" los datos para que el filtro los vea fácil
@@ -82,11 +82,10 @@ export class MaestrosScreen implements OnInit {
           });
         }
 
-        // 2. ASIGNACIÓN CORRECTA: Actualizamos la data del objeto existente
+        // Actualizamos la data del objeto existente
         this.dataSource.data = this.lista_maestros;
 
-        // 3. RE-VINCULACIÓN: Aseguramos que los componentes reconozcan la nueva data
-        // Esto es lo que garantiza que las flechas y el paginador reaccionen
+        // reconeccion de paginacion y ordenamiento despues de actualizar los datos por si fallann
         if (this.sort) {
           this.dataSource.sort = this.sort;
         }
@@ -94,13 +93,14 @@ export class MaestrosScreen implements OnInit {
           this.dataSource.paginator = this.paginator;
         }
       },
+      /* si no hay masestros */
       error: () => {
         this.notificationService.error('No se pudo obtener la lista de maestros');
       }
     });
   }
 
-  // Función para filtrar los datos de la tabla
+  // Función buscar en la tabla
   public applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();

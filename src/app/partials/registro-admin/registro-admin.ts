@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SHARED_IMPORTS } from '../../shared/shared.imports';
 import { NgxMaskDirective } from "ngx-mask";
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { AdministradoresService } from '../../services/administradores-service';
 import { NotificationService } from '../../services/tools/notification-service';
@@ -35,14 +35,23 @@ export class RegistroAdmin implements OnInit {
     private location: Location,
     private router: Router,
     private administradoresService: AdministradoresService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    //Inicializar el objeto admin con el esquema definido en el servicio
-    this.admin = this.administradoresService.esquemaAdmin();
-    //Asignar el rol al admin que se va a registrar o editar
-    this.admin.rol = this.rol;
+    //Primero validamos si existe un rol y un id, si es así, estamos en modo edición y cargamos los datos del usuario a editar
+    if(this.activatedRoute.snapshot.params['id'] !== undefined){
+      this.editar = true;
+      //Asignamos a nuestra variable global el valor del ID que viene por la URL
+      this.idUser = this.activatedRoute.snapshot.params['id'];
+      //Asignamos los datos del usuario que vienen desde la vista principal con el decorador
+      this.admin = this.datos_user;
+    }else{
+      // Si no va a editar, entonces inicializamos el JSON para registro nuevo
+      this.admin = this.administradoresService.esquemaAdmin();
+      this.admin.rol = this.rol;
+    }
   }
 
   //Funciones para password
@@ -112,7 +121,37 @@ export class RegistroAdmin implements OnInit {
   }
 
   public actualizar(){
-
+    // Validación de los datos
+    this.errors = {};
+    this.errors = this.administradoresService.validarAdmin(this.admin, this.editar);
+    if(Object.keys(this.errors).length > 0){
+      return;
+    }
+    // Llamamos a la función para actualizar al administrador, esta función se encuentra en el servicio de administradores
+    this.administradoresService.actualizarAdmin(this.admin).subscribe({
+      next: (response) => {
+        this.notificationService.success("Administrador actualizado exitosamente");
+        console.log(response);
+        //Si se actualiza correctamente, redirigimos al login
+        this.router.navigate(['/administrador']);
+      },
+      error: (error) => {
+        console.error("Error al actualizar administrador: ", error);
+        this.notificationService.error("Error al actualizar administrador");
+      }
+    });
   }
 
+  // Función para los campos solo de datos alfabeticos
+  public soloLetras(event: KeyboardEvent) {
+    const charCode = event.key.charCodeAt(0);
+    // Permitir solo letras (mayúsculas y minúsculas) y espacio
+    if (
+      !(charCode >= 65 && charCode <= 90) &&  // Letras mayúsculas
+      !(charCode >= 97 && charCode <= 122) && // Letras minúsculas
+      charCode !== 32                         // Espacio
+    ) {
+      event.preventDefault();
+    }
+  }
 }

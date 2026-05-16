@@ -115,5 +115,13 @@ export class AdministradoresService {
     return this.http.get<any>(`${environment.url_api}/lista-admins/`, { headers: this.getAuthHeaders() });
   }
 
+  //Creamos la petición GET para obtener los datos de un administrador por su id, esta función se llamará en el método obtenerUsuarioPorId() del componente registro-usuarios-screen.ts
+  public obtenerAdminPorId(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.url_api}/admin/?id=${id}`, { headers: this.getAuthHeaders() });
+  }
 
+  //Creamos la petición PUT para actualizar los datos de un administrador, esta función se llamará en el método actualizar() del componente registro-admin.ts
+  public actualizarAdmin(data: any): Observable<any> {
+    return this.http.put<any>(`${environment.url_api}/admin/`, data, { headers: this.getAuthHeaders() });
+  }
 }

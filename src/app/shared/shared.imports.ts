@@ -59,7 +59,7 @@ export const SHARED_IMPORTS = [
   MatSidenavModule,
   MatTableModule,
   MatPaginatorModule,
-  MatSortModule,
+  MatSortModule, /* para los filtros y ordenamiento */
   NgxMaskDirective,
   NgxMaskPipe,
   NgClass
