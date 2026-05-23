@@ -34,12 +34,13 @@
 
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Correo electrónico</mat-label>
-        <input matInput [(ngModel)]="maestro.email" name="email" placeholder="Escribe correo electrónico">
+        <input matInput [(ngModel)]="maestro.email" name="email" placeholder="Escribe correo electrónico" [disabled]="editar">
       </mat-form-field>
       @if (errors.email) {
         <div class="invalid-feedback">{{ errors.email }}</div>
       }
 
+      @if (!editar) {
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Contraseña</mat-label>
         <input matInput [(ngModel)]="maestro.password" name="password" [type]="inputType_1" placeholder="Escribe contraseña del maestro">
@@ -57,6 +58,7 @@
       @if (errors.confirmar_password) {
         <div class="invalid-feedback">{{ errors.confirmar_password }}</div>
       }
+    }
 
       <!-- Campo para la fecha de nacimiento del maestro -->
       <mat-form-field class="mat-input" appearance="outline">

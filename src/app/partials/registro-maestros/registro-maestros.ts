@@ -1,14 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SHARED_IMPORTS } from '../../shared/shared.imports';
-import { Router } from '@angular/router';
+import { NgxMaskDirective } from "ngx-mask";
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { MaestrosService } from '../../services/maestros-service';
 import { NotificationService } from '../../services/tools/notification-service';
 
 @Component({
   selector: 'app-registro-maestros',
+  standalone: true,
   imports: [
-    ...SHARED_IMPORTS
+    ...SHARED_IMPORTS,
+    NgxMaskDirective
   ],
   templateUrl: './registro-maestros.html',
   styleUrl: './registro-maestros.scss',
@@ -55,14 +58,33 @@ export class RegistroMaestros implements OnInit {
     private location: Location,
     private router: Router,
     private maestrosService: MaestrosService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
  ngOnInit() {
-  // Inicializamos el objeto con el esquema del servicio
-  this.maestro = this.maestrosService.esquemaMaestro();
-  // Asignamos el rol
-  this.maestro.rol = this.rol;
+   //Primero validamos si existe un rol y un id, si es así, estamos en modo edición y cargamos los datos del usuario a editar
+    if(this.activatedRoute.snapshot.params['id'] !== undefined){
+      this.editar = true;
+      //Asignamos a nuestra variable global el valor del ID que viene por la URL
+      this.idUser = this.activatedRoute.snapshot.params['id'];
+      //Asignamos los datos del usuario que vienen desde la vista principal con el decorador
+      this.maestro = this.datos_user;
+      /* para convertir el JSON de materias */
+      if (typeof this.maestro.materias_json === 'string') {
+        try {
+          // Intentamos convertir el texto "[1,2]" a un arreglo real [1, 2]
+          this.maestro.materias_json = JSON.parse(this.maestro.materias_json);
+        } catch (e) {
+          // Si algo falla y no es un JSON válido, lo dejamos como arreglo vacío para que no truene
+          this.maestro.materias_json = [];
+        }
+      }
+    }else{
+      // Si no va a editar, entonces inicializamos el JSON para registro nuevo
+      this.maestro = this.maestrosService.esquemaMaestro();
+      this.maestro.rol = this.rol;
+    }
 }
 
   //Funciones para password
@@ -131,7 +153,25 @@ export class RegistroMaestros implements OnInit {
 }
 
   public actualizar(){
-
+    // Validación de los datos
+    this.errors = {};
+    this.errors = this.maestrosService.validarMaestro(this.maestro, this.editar);
+    if(Object.keys(this.errors).length > 0){
+      return;
+    }
+    // Llamamos a la función para actualizar al maestro, esta función se encuentra en el servicio de maestros
+    this.maestrosService.actualizarMaestro(this.maestro).subscribe({
+      next: (response) => {
+        this.notificationService.success("Maestro actualizado exitosamente");
+        console.log(response);
+        //Si se actualiza correctamente, redirigimos al login
+        this.router.navigate(['/maestros']);
+      },
+      error: (error) => {
+        console.error("Error al actualizar maestro: ", error);
+        this.notificationService.error("Error al actualizar maestro");
+      }
+    });
   }
 
 
@@ -167,9 +207,11 @@ export class RegistroMaestros implements OnInit {
   console.log("Materias seleccionadas:", this.maestro.materias_json);
 }
 
-  public revisarSeleccion(nombre: string){
+
+  public revisarSeleccion(valor: string){
     if(this.maestro.materias_json){
-      const busqueda = this.maestro.materias_json.find((element: string)=>element===nombre);
+      // Usamos '==' en lugar de '===' por si el JSON manda números en vez de strings
+      const busqueda = this.maestro.materias_json.find((element: any) => element == valor);
       if(busqueda !== undefined){
         return true;
       }else{
@@ -179,6 +221,8 @@ export class RegistroMaestros implements OnInit {
       return false;
     }
   }
+
+
 
 
 }

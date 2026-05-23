@@ -101,15 +101,6 @@ export class AlumnosScreen implements OnInit {
       }
     });
   }
-
-  public goEditar(idUser: number) {
-    this.router.navigate(['/registro-usuarios', 'alumno', idUser]);
-  }
-
-  public delete(idUser: number) {
-
-  }
-
   // función que  de buscar/filtrar
   public applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -119,4 +110,15 @@ export class AlumnosScreen implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+  /* metodo para editar un alumno, se dirige a la pantalla de edición con el id del alumno */
+  public goEditar(id: number): void {
+    this.router.navigate(['/registro-usuarios', 'alumno', id]);
+  }
+
+  /* metodo para eliminar un alumno, se muestra una confirmacion antes de eliminar */
+  public delete(id: number): void {
+
+  }
+
+
 }

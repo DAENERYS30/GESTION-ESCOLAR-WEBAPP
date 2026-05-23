@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { SHARED_IMPORTS } from '../../shared/shared.imports';
 import { NgxMaskDirective } from "ngx-mask";
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { AlumnosService } from '../../services/alumnos-service';
 import { NotificationService } from '../../services/tools/notification-service';
@@ -24,6 +24,7 @@ export class RegistroAlumnos implements OnInit {
   public alumno: any = {};
   public errors: any = {};
   public editar: boolean = false;
+    public idUser: number = 0;
 
   // Variables para ocultar/mostrar contraseñas
   public hide_1: boolean = false;
@@ -35,14 +36,22 @@ export class RegistroAlumnos implements OnInit {
     private location: Location,
     private router: Router,
     private alumnosService: AlumnosService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    // 1. Inicializamos el objeto con los campos vacíos del servicio
-    this.alumno = this.alumnosService.esquemaAlumno();
-    // 2. Forzamos el rol a 'alumno'
-    this.alumno.rol = 'alumno';
+     if(this.activatedRoute.snapshot.params['id'] !== undefined){
+      this.editar = true;
+      //Asignamos a nuestra variable global el valor del ID que viene por la URL
+      this.idUser = this.activatedRoute.snapshot.params['id'];
+      //Asignamos los datos del usuario que vienen desde la vista principal con el decorador
+      this.alumno = this.datos_user;
+    }else{
+      // Si no va a editar, entonces inicializamos el JSON para registro nuevo
+      this.alumno = this.alumnosService.esquemaAlumno();
+      this.alumno.rol = this.rol;
+    }
   }
 
   /**
@@ -113,7 +122,25 @@ export class RegistroAlumnos implements OnInit {
     this.location.back();
   }
 
-  public actualizar() {
-    // Lógica para el método PUT (edición)
+  public actualizar(){
+    // Validación de los datos
+    this.errors = {};
+    this.errors = this.alumnosService.validarAlumno(this.alumno, this.editar);
+    if(Object.keys(this.errors).length > 0){
+      return;
+    }
+    // Llamamos a la función para actualizar al alumno, esta función se encuentra en el servicio de alumnos
+    this.alumnosService.actualizarAlumno(this.alumno).subscribe({
+      next: (response) => {
+        this.notificationService.success("Alumno actualizado exitosamente");
+        console.log(response);
+        //Si se actualiza correctamente, redirigimos al login
+        this.router.navigate(['/alumnos']);
+      },
+      error: (error) => {
+        console.error("Error al actualizar alumno: ", error);
+        this.notificationService.error("Error al actualizar alumno");
+      }
+    });
   }
 }

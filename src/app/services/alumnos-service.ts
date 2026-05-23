@@ -112,4 +112,13 @@ export class AlumnosService {
   public obtenerListaAlumnos(): Observable<any> {
     return this.http.get<any>(`${environment.url_api}/lista-alumnos/`, { headers: this.getAuthHeaders() });
   }
+  //Creamos la petición GET para obtener los datos de un alumno por su id, esta función se llamará en el método obtenerUsuarioPorId() del componente registro-usuarios-screen.ts
+  public obtenerAlumnoPorId(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.url_api}/alumnos/?id=${id}`, { headers: this.getAuthHeaders() });
+  }
+
+  //Creamos la petición PUT para actualizar los datos de un alumno, esta función se llamará en el método actualizar() del componente registro-alumno.ts
+  public actualizarAlumno(data: any): Observable<any> {
+    return this.http.put<any>(`${environment.url_api}/alumnos/`, data, { headers: this.getAuthHeaders() });
+  }
 }

@@ -109,12 +109,13 @@ export class MaestrosScreen implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
-
-  public goEditar(idUser: number) {
-    this.router.navigate(['/registro-usuarios', 'maestro', idUser]);
+  /* metodo para editar un maestro, se dirige a la pantalla de edición con el id del administrador */
+  public goEditar(id: number): void {
+    this.router.navigate(['/registro-usuarios', 'maestro', id]);
   }
 
-  public delete(idUser: number) {
+  /* metodo pa eliminar un maestro, se muestra una confirmacion antes de eliminar */
+  public delete(id: number) {
 
   }
 
