@@ -24,11 +24,18 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatTableModule} from '@angular/material/table'; /* para las tablas de angular mostar */
 import { MatSortModule } from '@angular/material/sort'; /* para filtros y ordenamiento */
 import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatDialogModule} from '@angular/material/dialog';/* para los modales */
 
 /* =========================
    ngx-mask (inputs de código)
    ========================= */
 import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
+
+/* =========================
+    Gráficas
+   ========================= */
+// Modulo para las gráficas (ng2-charts ahora exporta directivas standalone)
+import { BaseChartDirective } from 'ng2-charts';
 
 /**
  * SHARED_IMPORTS
@@ -62,5 +69,6 @@ export const SHARED_IMPORTS = [
   MatSortModule, /* para los filtros y ordenamiento */
   NgxMaskDirective,
   NgxMaskPipe,
-  NgClass
+  NgClass,
+  MatDialogModule, /* para modales */
 ];

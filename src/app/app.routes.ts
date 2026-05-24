@@ -24,6 +24,10 @@ export const routes: Routes = [
         path: 'registro-usuarios/:rol/:id',
         loadComponent: () => import('./screens/registro-usuarios-screen/registro-usuarios-screen').then(m => m.RegistroUsuariosScreen),
       },
+      {
+        path: 'registro-usuarios/:rol/:id',
+        loadComponent: () => import('./screens/registro-usuarios-screen/registro-usuarios-screen').then(m => m.RegistroUsuariosScreen),
+      },
     ]
   },
 
@@ -48,6 +52,10 @@ export const routes: Routes = [
         path: 'maestros',
         loadComponent: () => import('./screens/maestros-screen/maestros-screen').then(m => m.MaestrosScreen),
       },
+      {
+        path: 'graficas',
+        loadComponent: () => import('./screens/graficas-screen/graficas-screen').then(m => m.GraficasScreen),
+      }
     ]
   },
 

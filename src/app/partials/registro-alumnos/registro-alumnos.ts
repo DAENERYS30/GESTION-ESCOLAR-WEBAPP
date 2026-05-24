@@ -41,6 +41,7 @@ export class RegistroAlumnos implements OnInit {
   ) { }
 
   ngOnInit() {
+    //Primero validamos si existe un rol y un id, si es así, estamos en modo edición y cargamos los datos del usuario a editar
      if(this.activatedRoute.snapshot.params['id'] !== undefined){
       this.editar = true;
       //Asignamos a nuestra variable global el valor del ID que viene por la URL

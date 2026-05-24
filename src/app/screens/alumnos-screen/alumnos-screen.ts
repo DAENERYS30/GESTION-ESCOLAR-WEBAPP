@@ -9,6 +9,8 @@ import { AlumnosService } from '../../services/alumnos-service';
 import { NotificationService } from '../../services/tools/notification-service';
 import { AuthServices } from '../../services/auth-services';
 import { MatSort } from '@angular/material/sort'; /* para filtros y ordenamiento */
+import { EliminarUserModal } from '../../modals/eliminar-user-modal/eliminar-user-modal';
+
 
 @Component({
   selector: 'app-alumnos-screen',
@@ -115,9 +117,36 @@ export class AlumnosScreen implements OnInit {
     this.router.navigate(['/registro-usuarios', 'alumno', id]);
   }
 
-  /* metodo para eliminar un alumno, se muestra una confirmacion antes de eliminar */
-  public delete(id: number): void {
+ /* Método para eliminar un alumno, se muestra una confirmación antes de eliminar */
+  public delete(idUser: number) {
+    // Se obtiene el ID del usuario en sesión
+    const idUserSession = Number(this.authService.getUserId());
 
+    if (
+      this.rol === 'administrador' ||
+      this.rol === 'maestro' ||
+      (this.rol === 'alumno' && idUserSession === idUser)
+    ) {
+
+      const dialogRef = this.dialog.open(EliminarUserModal,{
+        data: { id: idUser, rol: 'alumno' }, // Se pasa el rol 'alumno'
+        height: '288px',
+        width: '328px',
+      });
+
+      // Después de cerrar el modal, se actualiza la lista de alumnos
+      dialogRef.afterClosed().subscribe(result => {
+        if(result.isDelete){
+          this.obtenerAlumnos(); // Asegúrate de llamar a tu función de refresco correcta
+        } else {
+          this.notificationService.error("Alumno no se ha podido eliminar.");
+        }
+      });
+
+    } else {
+      // Si un alumno intenta eliminar a otro alumno
+      this.notificationService.error("No tienes permiso para eliminar a este alumno.");
+    }
   }
 
 

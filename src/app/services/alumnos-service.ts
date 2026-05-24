@@ -121,4 +121,8 @@ export class AlumnosService {
   public actualizarAlumno(data: any): Observable<any> {
     return this.http.put<any>(`${environment.url_api}/alumnos/`, data, { headers: this.getAuthHeaders() });
   }
+  //Creamos la petición DELETE para eliminar un alumno, esta función se llamará en el método eliminar() dentro del modal eliminar-user-modal.ts
+  public eliminarAlumno(id: number): Observable<any> {
+    return this.http.delete<any>(`${environment.url_api}/alumnos/?id=${id}`, { headers: this.getAuthHeaders() });
+  }
 }
