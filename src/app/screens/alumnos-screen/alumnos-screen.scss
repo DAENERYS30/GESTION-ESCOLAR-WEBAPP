@@ -116,6 +116,7 @@ table {
   color: var(--text-main, #fff)!important;
 }
 
+/* corregir celdas  */
 .mat-mdc-cell {
   text-align: left;
   font-family: Nexa!important;
@@ -123,6 +124,11 @@ table {
   letter-spacing: 0px!important;
   color: var(--text-main, #fff)!important;
   opacity: 1!important;
+
+  /* --- REGLAS PARA QUE EL TEXTO NO SE CORTE --- */
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
 }
 
 /* Acciones */

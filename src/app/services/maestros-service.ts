@@ -105,7 +105,15 @@ export class MaestrosService {
 
    if(!data["materias_json"] || data["materias_json"].length === 0){
   error["materias_json"] = "Debes seleccionar al menos una materia";
-}
+  }
+  /* validación para el sueldo estimado */
+  if(!this.validatorService.required(data["sueldo"])){
+    error["sueldo"] = this.errorService.required;
+  }
+/* validación para el campus */
+  if(!this.validatorService.required(data["campus"])){
+    error["campus"] = this.errorService.required;
+  }
 
     return error;
   }

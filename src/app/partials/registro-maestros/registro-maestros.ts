@@ -53,6 +53,11 @@ export class RegistroMaestros implements OnInit {
     {value: '9', nombre: 'Ingeniería de Software'},
     {value: '10', nombre: 'Administración de S.O.'},
   ];
+  // Arreglo para los radio buttons de los campus
+  public campuses: any[] = [
+    { value: 'CU San Manuel', viewValue: 'CU San Manuel' },
+    { value: 'CU2', viewValue: 'CU2' }
+  ];
 
   constructor(
     private location: Location,

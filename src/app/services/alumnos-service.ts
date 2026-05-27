@@ -100,7 +100,14 @@ export class AlumnosService {
     if(!this.validatorService.required(data["ocupacion"])){
       error["ocupacion"] = this.errorService.required;
     }
-
+    /* validaciones de direccion */
+    if(!this.validatorService.required(data["direccion"])){
+      error["direccion"] = this.errorService.required;
+    }
+    /* validaciones de sexo */
+    if(!this.validatorService.required(data["sexo"])){
+      error["sexo"] = this.errorService.required;
+    }
     return error;
   }
 

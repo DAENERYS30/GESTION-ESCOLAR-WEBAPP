@@ -117,6 +117,30 @@
       @if (errors.ocupacion) {
         <div class="invalid-feedback">{{ errors.ocupacion }}</div>
       }
+       <!-- nuevos campos  Dirección y selector de sexo-->
+        <!-- Dirección  del alumno -->
+       <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Dirección</mat-label>
+        <input matInput [(ngModel)]="alumno.direccion" name="direccion" placeholder="Escribe la dirección del alumno">
+      </mat-form-field>
+      @if (errors.direccion) {
+        <div class="invalid-feedback">{{ errors.direccion }}</div>
+      }
+
+      <!-- selector de Sexo -->
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Sexo</mat-label>
+        <mat-select [(ngModel)]="alumno.sexo">
+          @for (sexo of sexos; track $index) {
+            <mat-option [value]="sexo.viewValue">
+              {{sexo.viewValue}}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      @if (errors.sexo) {
+        <div class="invalid-feedback">{{ errors.sexo }}</div>
+      }
 
       <!-- En esta clase se definen los botones para guardar o actualizar el registro -->
       <div class="section-buttons">

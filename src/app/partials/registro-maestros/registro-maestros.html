@@ -125,6 +125,29 @@
           <div class="invalid-feedback">{{ errors.materias_json }}</div>
         }
       </div>
+      <!--Radio button para elegir campus -->
+      <div class="form-group col-12">
+        <label class="title-materias" for="campus">Selecciona el campus</label>
+        <mat-radio-group class="radio-group" [(ngModel)]="maestro.campus" name="campus">
+          @for (campus of campuses; track $index) {
+            <mat-radio-button class="radio-item" [value]="campus.value">
+              {{campus.viewValue}}
+            </mat-radio-button>
+          }
+        </mat-radio-group>
+      </div>
+      @if (errors.campus) {
+        <div class="invalid-feedback" style="display: block;">{{ errors.campus }}</div>
+      }
+      <!-- Campo para escribir el sueldo estimado -->
+      <mat-form-field class="mat-input" appearance="outline">
+        <mat-label>Sueldo Estimado</mat-label>
+        <span matTextPrefix>$&nbsp;</span>
+        <input matInput type="number" [(ngModel)]="maestro.sueldo" name="sueldo" placeholder="0.00">
+      </mat-form-field>
+      @if (errors.sueldo) {
+        <div class="invalid-feedback">{{ errors.sueldo }}</div>
+      }
       <!-- En esta clase se definen los botones para guardar o actualizar el registro -->
       <div class="section-buttons">
         <button class="btn btn-danger" (click)="regresar()">Cancelar</button>

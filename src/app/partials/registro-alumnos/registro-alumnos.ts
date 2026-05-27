@@ -32,6 +32,13 @@ export class RegistroAlumnos implements OnInit {
   public inputType_1: string = 'password';
   public inputType_2: string = 'password';
 
+  /* /Para el selector de sexo */
+  public sexos: any[] = [
+    {value: 'M', viewValue: 'Masculino'},
+    {value: 'F', viewValue: 'Femenino'},
+    {value: 'O', viewValue: 'Prefiero no decirlo'},
+  ];
+
   constructor(
     private location: Location,
     private router: Router,

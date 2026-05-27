@@ -36,6 +36,9 @@ export class MaestrosScreen implements OnInit {
     'rfc',
     'cubiculo',
     'area_investigacion',
+    'materias_json',
+    'campus',
+    'sueldo',
     'editar',
     'eliminar'
   ];

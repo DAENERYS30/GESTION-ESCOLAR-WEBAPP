@@ -25,7 +25,7 @@ export class GraficasScreen implements OnInit{
     labels: ["Administradores", "Maestros", "Alumnos"],
     datasets: [
       {
-        data:[89, 34, 43],
+        data:[0, 0, 0],
         label: 'Registro de usuarios',
         backgroundColor: '#F88406'
       }
@@ -38,17 +38,15 @@ export class GraficasScreen implements OnInit{
 
   //Barras
   barChartData = {
-    labels: ["Congreso", "FePro", "Presentación Doctoral", "Feria Matemáticas", "T-System"],
+    labels: ["Administradores", "Maestros", "Alumnos"],
     datasets: [
       {
-        data:[34, 43, 54, 28, 74],
+        data:[0, 0, 0],
         label: 'Eventos Académicos',
         backgroundColor: [
           '#F88406',
           '#FCFF44',
           '#82D3FB',
-          '#FB82F5',
-          '#2AD84A'
         ]
       }
     ]
@@ -63,7 +61,7 @@ export class GraficasScreen implements OnInit{
     labels: ["Administradores", "Maestros", "Alumnos"],
     datasets: [
       {
-        data:[89, 34, 43],
+        data:[0, 0, 0],
         label: 'Registro de usuarios',
         backgroundColor: [
           '#FCFF44',
@@ -83,7 +81,7 @@ export class GraficasScreen implements OnInit{
     labels: ["Administradores", "Maestros", "Alumnos"],
     datasets: [
       {
-        data:[89, 34, 43],
+        data:[0, 0, 0],
         label: 'Registro de usuarios',
         backgroundColor: [
           '#F88406',
@@ -113,6 +111,25 @@ export class GraficasScreen implements OnInit{
       (response)=>{
         this.total_user = response;
         console.log("Total de usuarios: ", this.total_user);
+
+        /* creamos un arreglo para los nuevos datos del back */
+        const nuevosDatos = [
+          response.total_admins,
+          response.total_maestros,
+          response.total_alumnos
+        ];
+
+        /* sobreescritura de los datos  */
+        this.lineChartData.datasets[0].data = nuevosDatos;
+        this.pieChartData.datasets[0].data = nuevosDatos;
+        this.doughnutChartData.datasets[0].data = nuevosDatos;
+        this.barChartData.datasets[0].data = nuevosDatos;
+
+        /* reasignamos el objeto para actualizar la gráfica */
+        this.lineChartData = { ...this.lineChartData };
+        this.pieChartData = { ...this.pieChartData };
+        this.doughnutChartData = { ...this.doughnutChartData };
+        this.barChartData = { ...this.barChartData };
 
         this.notificationService.success("Total de usuarios registrados por cada rol obtenido correctamente");
       }, (error)=>{

@@ -25,6 +25,13 @@ export class RegistroAdmin implements OnInit {
   public editar:boolean = false;
   public idUser: number = 0;
 
+  //Para el selector de categroia
+  public categorias: any[] = [
+    {value: '1', viewValue: 'Tiempo Completo'},
+    {value: '2', viewValue: 'Medio Tiempo'},
+    {value: '3', viewValue: 'Hora-Clase'},
+  ];
+
   //Para contraseñas
   public hide_1: boolean = false;
   public hide_2: boolean = false;

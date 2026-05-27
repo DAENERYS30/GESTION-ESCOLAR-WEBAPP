@@ -38,6 +38,8 @@ export class AlumnosScreen implements OnInit {
     'edad',
     'telefono',
     'ocupacion',
+    'direccion',
+    'sexo',
     'editar',
     'eliminar'
   ];
