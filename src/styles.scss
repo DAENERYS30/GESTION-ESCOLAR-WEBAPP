@@ -170,6 +170,7 @@ p, span, label, input, button {
   color: $color-error;
   font-family: $font-main;
   text-align: left;
+  margin-left: 2.8rem;
 }
 
 .feedback-success {
@@ -237,3 +238,5 @@ p, span, label, input, button {
 .mat-mdc-option {
   background-color: #ffffff !important;
 }
+
+

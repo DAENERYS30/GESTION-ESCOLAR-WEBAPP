@@ -66,6 +66,7 @@
   justify-content: flex-start;
   align-items: flex-start;
   gap: 0.5rem;
+  margin-left: -1.1rem;
 }
 
 /* Estilo de los campos de formulario */
@@ -176,7 +177,7 @@ mat-form-field {
 }
 
 .invalid-feedback, .feedback-error {
-  margin-left: 2.5rem;
+  margin-left: 3rem;
 }
 
 /* =========================
@@ -233,4 +234,15 @@ mat-form-field {
     margin-left: 0; /* Elimina el margen */
   }
 
+}
+
+.campus {
+  margin-left: 2rem;
+}
+
+.signo-peso {
+  margin-left: 12px;
+  display: flex;       /* Flexbox alinea perfecto el texto en los div */
+  align-items: center;
+  font-weight: 500;
 }

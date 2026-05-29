@@ -42,8 +42,11 @@ export class EliminarUserModal implements OnInit{
           this.dialogRef.close({isDelete:true});
         },
         error: (error) => {
-          console.error('Error al eliminar administrador:', error);
-          this.notificationService.error('Error al eliminar administrador');
+          if (error.status === 403) {
+            this.notificationService.error('No puedes eliminar tu propia cuenta de administrador.');
+          } else {
+            this.notificationService.error('Error al eliminar administrador');
+          }
         }
       });
 

@@ -14,12 +14,18 @@ import { NotificationService } from '../../services/tools/notification-service';
 })
 export class LoginScreen implements OnInit {
 
+   // Variables para ocultar/mostrar contraseñas
+  public hide_1: boolean = false;
+  public hide_2: boolean = false;
+  public inputType_1: string = 'password';
+  public inputType_2: string = 'password';
+
   // Aquí van las variables globales
   public username: string = '';
   public password: string = '';
   public load: boolean = false;
   public errors: any = {};
-  public type: string = "password";
+
 
   constructor(
     public router: Router,
@@ -82,8 +88,17 @@ export class LoginScreen implements OnInit {
     this.router.navigate(['registro-usuarios']);
   }
 
-  public showPassword() {
 
+  // --- Funciones de Utilidad ---
+
+  public showPassword() {
+    this.hide_1 = !this.hide_1;
+    this.inputType_1 = this.hide_1 ? 'text' : 'password';
+  }
+
+  public showPwdConfirmar() {
+    this.hide_2 = !this.hide_2;
+    this.inputType_2 = this.hide_2 ? 'text' : 'password';
   }
 
 }

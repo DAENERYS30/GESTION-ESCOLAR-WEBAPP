@@ -139,8 +139,11 @@ export class AdministradoresService {
 
   //Creamos la petición PATCH para cambiar el estatus del usuario a inactivo, esta función se llamará en el método eliminarUser() dentro del modal eliminar-user-modal.ts
   public desactivarAdmin(id: number): Observable<any> {
-    return this.http.patch<any>(`${environment.url_api}/admin/?id=${id}`, { id }, { headers: this.getAuthHeaders() });
-  }
+    const body = { id: id }; // Django espera 'id' en el request.data
+    return this.http.patch(`${environment.url_api}/admin/`, body, {
+      headers: this.getAuthHeaders()
+  });
+}
    //Creamos la petición GET para obtener el total de usuarios registrados por cada rol, esta función se llamará en el método obtenerTotalUsers() del componente graficas-screen.ts
   public getTotalUsuarios(): Observable<any> {
     return this.http.get<any>(`${environment.url_api}/total-usuarios/`, { headers: this.getAuthHeaders() });

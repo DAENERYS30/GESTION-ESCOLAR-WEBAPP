@@ -151,4 +151,119 @@ export class RegistroAlumnos implements OnInit {
       }
     });
   }
+
+  // Función para los campos solo de datos alfabeticos
+  public soloLetras(event: KeyboardEvent) {
+    const charCode = event.key.charCodeAt(0);
+    // Permitir solo letras (mayúsculas y minúsculas) y espacio
+    if (
+      !(charCode >= 65 && charCode <= 90) &&  // Letras mayúsculas
+      !(charCode >= 97 && charCode <= 122) && // Letras minúsculas
+      charCode !== 32                         // Espacio
+    ) {
+      event.preventDefault();
+    }
+  }
+
+  /* funcion para los campos que requiran solo números */
+  public soloNumeros(event: KeyboardEvent) {
+    const charCode = event.key.charCodeAt(0);
+    // Permitir estrictamente solo números (del 0 al 9)
+    if (!(charCode >= 48 && charCode <= 57)) {
+      // Si el usuario teclea una letra, espacio o signo, cancelamos la acción
+      event.preventDefault();
+    }
+  }
+
+
+
+  public formatoRFC(event: KeyboardEvent) {
+    //  Permitir teclas de control (Borrar, Tabulador, Flechas de navegación)
+    if (
+      event.key === 'Backspace' ||
+      event.key === 'Delete' ||
+      event.key === 'Tab'
+    ) {
+      return; // Se sale de la función y permite que la tecla haga su trabajo normal
+    }
+
+    const charCode = event.key.charCodeAt(0);
+    const longitudActual = this.alumno.rfc ? this.alumno.rfc.length : 0;
+
+    const esLetra = (charCode >= 65 && charCode <= 90) ||
+                    (charCode >= 97 && charCode <= 122) ||
+                    charCode === 38 || charCode === 209 || charCode === 241;
+
+    const esNumero = (charCode >= 48 && charCode <= 57);
+
+    // Primeros 4 caracteres -> SOLO LETRAS
+    if (longitudActual < 4) {
+      if (!esLetra) {
+        event.preventDefault();
+      }
+    }
+    // Siguientes 6 caracteres -> SOLO NÚMEROS
+    else if (longitudActual >= 4 && longitudActual < 10) {
+      if (!esNumero) {
+        event.preventDefault();
+      }
+    }
+    //  Últimos 3 caracteres -> ALFANUMÉRICO
+    else if (longitudActual >= 10 && longitudActual < 13) {
+      if (!esLetra && !esNumero) {
+        event.preventDefault();
+      }
+    }
+    //Si ya llegó a 13 caracteres, bloqueamos que siga escribiendo
+    else {
+      event.preventDefault();
+    }
+  }
+
+  // Función para el campo de CURP
+  public formatoCURP(event: KeyboardEvent) {
+    // 0. PASE VIP: Permitir teclas de control
+    if (
+      event.key === 'Backspace' ||
+      event.key === 'Delete' ||
+      event.key === 'Tab' ||
+      event.key === 'ArrowLeft' ||
+      event.key === 'ArrowRight'
+    ) {
+      return;
+    }
+
+    const charCode = event.key.charCodeAt(0);
+    // Asegúrate de que la variable apunte a donde guardas la curp (ej. this.alumno.curp)
+    const longitudActual = this.alumno.curp ? this.alumno.curp.length : 0;
+
+    // Solo Letras (incluye la Ñ)
+    const esLetra = (charCode >= 65 && charCode <= 90) ||
+                    (charCode >= 97 && charCode <= 122) ||
+                    charCode === 209 || charCode === 241;
+
+    // Solo Números
+    const esNumero = (charCode >= 48 && charCode <= 57);
+
+    // REGLA 1: Primeros 4 caracteres -> SOLO LETRAS
+    if (longitudActual < 4) {
+      if (!esLetra) event.preventDefault();
+    }
+    // REGLA 2: Siguientes 6 caracteres (posiciones 4 al 9) -> SOLO NÚMEROS
+    else if (longitudActual >= 4 && longitudActual < 10) {
+      if (!esNumero) event.preventDefault();
+    }
+    // REGLA 3: Siguientes 6 caracteres (posiciones 10 al 15) -> SOLO LETRAS
+    else if (longitudActual >= 10 && longitudActual < 16) {
+      if (!esLetra) event.preventDefault();
+    }
+    // REGLA 4: Posición 16 (Diferenciador de siglo) -> ALFANUMÉRICO
+    else if (longitudActual === 16) {
+      if (!esLetra && !esNumero) event.preventDefault();
+    }
+    // REGLA 5: Posición 17 (Dígito verificador final) -> SOLO NÚMERO
+    else if (longitudActual === 17) {
+      if (!esNumero) event.preventDefault();
+    }
+  }
 }

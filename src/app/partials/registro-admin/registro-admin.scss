@@ -158,7 +158,7 @@ mat-form-field{
 }
 
 .invalid-feedback, .feedback-error {
-  margin-left: 2.5rem;
+  margin-left: 2.5rem!important;
 }
 ::ng-deep .mat-mdc-select-panel {
   background-color: #ffffff !important; /* Fondo sólido */
@@ -171,3 +171,4 @@ mat-form-field{
 ::ng-deep .mat-mdc-option {
   background-color: #ffffff !important;
 }
+

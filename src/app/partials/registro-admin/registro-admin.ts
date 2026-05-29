@@ -161,4 +161,61 @@ export class RegistroAdmin implements OnInit {
       event.preventDefault();
     }
   }
+
+  /* funcion para los campos que requiran solo números */
+  public soloNumeros(event: KeyboardEvent) {
+    const charCode = event.key.charCodeAt(0);
+    // Permitir estrictamente solo números (del 0 al 9)
+    if (!(charCode >= 48 && charCode <= 57)) {
+      // Si el usuario teclea una letra, espacio o signo, cancelamos la acción
+      event.preventDefault();
+    }
+  }
+
+
+
+  public fromatoRFC(event: KeyboardEvent) {
+    //  Permitir teclas de control (Borrar, Tabulador, Flechas de navegación)
+    if (
+      event.key === 'Backspace' ||
+      event.key === 'Delete' ||
+      event.key === 'Tab'
+    ) {
+      return; // Se sale de la función y permite que la tecla haga su trabajo normal
+    }
+
+    const charCode = event.key.charCodeAt(0);
+    const longitudActual = this.admin.rfc ? this.admin.rfc.length : 0;
+
+    const esLetra = (charCode >= 65 && charCode <= 90) ||
+                    (charCode >= 97 && charCode <= 122) ||
+                    charCode === 38 || charCode === 209 || charCode === 241;
+
+    const esNumero = (charCode >= 48 && charCode <= 57);
+
+    // Primeros 4 caracteres -> SOLO LETRAS
+    if (longitudActual < 4) {
+      if (!esLetra) {
+        event.preventDefault();
+      }
+    }
+    // Siguientes 6 caracteres -> SOLO NÚMEROS
+    else if (longitudActual >= 4 && longitudActual < 10) {
+      if (!esNumero) {
+        event.preventDefault();
+      }
+    }
+    //  Últimos 3 caracteres -> ALFANUMÉRICO
+    else if (longitudActual >= 10 && longitudActual < 13) {
+      if (!esLetra && !esNumero) {
+        event.preventDefault();
+      }
+    }
+    //Si ya llegó a 13 caracteres, bloqueamos que siga escribiendo
+    else {
+      event.preventDefault();
+    }
+  }
+
+
 }

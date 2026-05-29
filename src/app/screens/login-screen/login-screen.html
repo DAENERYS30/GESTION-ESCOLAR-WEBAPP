@@ -23,12 +23,12 @@
         <div class="form-group">
           <label for="password">Contraseña</label>
           <div style="position:relative;">
-            <input [type]="type" [(ngModel)]="password" id="password" name="password_user" class="form-control pwd"
+            <input [type]="inputType_1" [(ngModel)]="password" id="password" name="password_user" class="form-control pwd"
               placeholder="Mínimo 8 caracteres" autocomplete="current-password" (keyup.enter)="login()"
               style="padding-right:40px;" />
             <span class="show-password" (click)="showPassword()"
               style="position:absolute; right:18px; top:50%; transform:translateY(-50%);">
-              <i [ngClass]="type == 'password' ? 'bi bi-eye-fill' : 'bi bi-eye-slash-fill'"></i>
+              <i [ngClass]="inputType_1 == 'password' ? 'bi bi-eye-fill' : 'bi bi-eye-slash-fill'"></i>
             </span>
           </div>
           @if (errors.password) {
@@ -56,5 +56,3 @@
     </div>
   </div>
 </section>
-
-prueba XDXDXD

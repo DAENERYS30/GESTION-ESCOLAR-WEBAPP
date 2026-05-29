@@ -8,30 +8,35 @@
         </div>
       </div>
       <!-- Aquí empiezan los campos del formulario -->
+       <!-- para el ID de administrador -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>ID de administrador</mat-label>
-        <input matInput [(ngModel)]="admin.clave_admin" name="clave_admin" placeholder="Escribe clave de administrador">
+        <!-- funcion para solo números = soloNumeros -->
+        <input matInput [(ngModel)]="admin.clave_admin" name="clave_admin" placeholder="Escribe clave de administrador" (keypress)="soloNumeros($event)">
       </mat-form-field>
       @if (errors.clave_admin) {
         <div class="invalid-feedback">{{ errors.clave_admin }}</div>
       }
 
+      <!-- nombre del administrador -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Nombre</mat-label>
-        <input matInput [(ngModel)]="admin.first_name" name="first_name" placeholder="Escribe nombre del administrador">
+        <input matInput [(ngModel)]="admin.first_name" name="first_name" placeholder="Escribe nombre del administrador" (keypress)="soloLetras($event)">
       </mat-form-field>
       @if (errors.first_name) {
         <div class="invalid-feedback">{{ errors.first_name }}</div>
       }
 
+      <!-- apellidos del administrador -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Apellidos</mat-label>
-        <input matInput [(ngModel)]="admin.last_name" name="last_name" placeholder="Escribe apellidos del administrador">
+        <input matInput [(ngModel)]="admin.last_name" name="last_name" placeholder="Escribe apellidos del administrador" (keypress)="soloLetras($event)">
       </mat-form-field>
       @if (errors.last_name) {
         <div class="invalid-feedback">{{ errors.last_name }}</div>
       }
 
+      <!-- correo electrónico del administrador -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Correo electrónico</mat-label>
         <input matInput [(ngModel)]="admin.email" name="email" placeholder="Escribe correo electrónico" [disabled]="editar">
@@ -40,6 +45,7 @@
         <div class="invalid-feedback">{{ errors.email }}</div>
       }
 
+      <!-- contraseña del administrador -->
       @if (!editar) {
         <mat-form-field class="mat-input" appearance="outline">
           <mat-label>Contraseña</mat-label>
@@ -60,6 +66,7 @@
         }
       }
 
+      <!-- teléfono del administrador -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Teléfono</mat-label>
         <input matInput [(ngModel)]="admin.telefono" mask="000-000-0000" name="telefono" placeholder="Escribe teléfono del administrador">
@@ -68,9 +75,10 @@
         <div class="invalid-feedback">{{ errors.telefono }}</div>
       }
 
+      <!-- RFC del administrador -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>RFC</mat-label>
-        <input matInput minlength="12" maxlength="13" [(ngModel)]="admin.rfc" name="rfc" placeholder="Escribe RFC del administrador">
+        <input matInput minlength="12" maxlength="13" [(ngModel)]="admin.rfc" name="rfc" placeholder="Escribe RFC del administrador" (input)="admin.rfc = admin.rfc.toUpperCase()" (keydown)="fromatoRFC($event)">
         <mat-hint align="end">{{admin.rfc?.length || 0}}/13</mat-hint>
       </mat-form-field>
       @if (errors.rfc) {
@@ -79,7 +87,7 @@
 
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Edad</mat-label>
-        <input matInput [(ngModel)]="admin.edad" mask="00" name="edad" placeholder="Escribe edad del administrador">
+        <input matInput [(ngModel)]="admin.edad" mask="00" name="edad" placeholder="Escribe edad del administrador" >
       </mat-form-field>
       @if (errors.edad) {
         <div class="invalid-feedback">{{ errors.edad }}</div>
@@ -110,7 +118,7 @@
       <!--grado academico  -->
       <mat-form-field class="mat-input" appearance="outline">
         <mat-label>Grado Académico</mat-label>
-        <input matInput [(ngModel)]="admin.grado_academico" name="grado_academico" placeholder="Escribe grado académico del administrador">
+        <input matInput [(ngModel)]="admin.grado_academico" name="grado_academico" placeholder="Escribe grado académico del administrador" (keydown)="soloLetras($event)">
       </mat-form-field>
       @if (errors.grado_academico) {
         <div class="invalid-feedback">{{ errors.grado_academico }}</div>
